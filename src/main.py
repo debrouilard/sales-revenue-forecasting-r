@@ -4,7 +4,7 @@ from src.forecasting import forecast_arima, forecast_ets
 
 def main():
     # Load data
-    df = load_sales_data('data/sales.csv')
+    df = load_sales_data('data/stores_sales_forecasting.csv')
     
     # Plot historical sales
     plot_sales(df)

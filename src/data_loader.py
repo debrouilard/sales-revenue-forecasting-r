@@ -1,9 +1,19 @@
 import pandas as pd
 
-def load_sales_data(filepath: str, freq='M') -> pd.DataFrame:
+def load_sales_data(filepath: str) -> pd.DataFrame:
     """
-    Load sales CSV with 'Date' and 'Revenue' columns.
+    Load a Kaggle sales CSV and return monthly aggregated sales.
     """
-    df = pd.read_csv(filepath, parse_dates=['Date'], index_col='Date')
-    df = df.asfreq(freq)
+    # Read CSV with proper encoding
+    df = pd.read_csv(filepath, parse_dates=['Order Date'], encoding='latin1')
+    
+    # Keep only the necessary columns and rename Sales -> Revenue
+    df = df[['Order Date', 'Sales']].rename(columns={'Sales': 'Revenue'})
+    
+    # Set date as index
+    df = df.set_index('Order Date')
+    
+    # Aggregate monthly
+    df = df.resample('M').sum()
+    
     return df
